@@ -1,0 +1,6 @@
+interface:
+  display_name: "抖音字幕转 Word"
+  short_description: "提取抖音字幕并生成完整或原话文章版 Word 文档"
+  default_prompt: "使用 $video-subtitle-to-word 处理这个抖音视频链接，先让我选择完整字幕版或博主原话文章版。"
+policy:
+  allow_implicit_invocation: true
