@@ -28,21 +28,23 @@ description: 将公开抖音视频解析、下载并转写为 Word 文档。用�
 
 只处理抖音链接，优先使用免费公开接口，不要求用户提供账号 Cookie 或付费 API Key。
 
-首选接口：
+按以下顺序尝试解析接口（主用 `douyin.wtf`）：
 
 ```text
-GET http://api.youman.team/douyin?url=<urlencoded-douyin-url>
+GET https://douyin.wtf/api/hybrid/video_data?url=<urlencoded-douyin-url>
 ```
 
-验证：HTTP 成功、JSON `code == 200`、存在 `data.url`，且返回的媒体 URL 可访问。记录创作者、标题、时长、原链接和解析接口。
+验证：HTTP 成功、JSON `code == 200`、存在 `data.video` 中的可播放地址（优先 H.264），且返回的媒体 URL 可访问。记录创作者、标题、时长、原链接和解析接口。
 
-失败后按顺序尝试：
+主接口失败后按顺序尝试以下备用接口：
 
-1. `https://api.bugpk.com/api/douyin?url=<urlencoded-douyin-url>`，设置有限超时。
-2. 其他当前可访问的免费公开解析工具；优先选择无需登录、无需上传账号 Cookie 的工具。
-3. 用户可访问的免费网页解析器，例如 Easydown 或同类服务；必要时用浏览器完成粘贴和下载。
+1. `http://api.youman.team/douyin?url=<urlencoded-douyin-url>`，设置有限超时；验证 `code == 200`、存在 `data.url`，并将 `duration` 按秒处理。
+2. `https://collect.xmwxxc.com/collect/douyin/?url=<urlencoded-douyin-url>`，验证返回的 `url` 是可访问的视频地址。
+3. `https://api.bugpk.com/api/douyin?url=<urlencoded-douyin-url>`，设置有限超时。
+4. 其他当前可访问的免费公开解析工具；优先选择无需登录、无需上传账号 Cookie 的工具。
+5. 用户可访问的免费网页解析器，例如 Easydown 或同类服务；必要时用浏览器完成粘贴和下载。
 
-每次切换都记录失败原因。不能把“搜索结果有相关页面”当成视频已获取；必须验证媒体文件存在、类型为视频且可读取。
+接口切换时记录失败原因。无论接口返回什么，都必须验证媒体文件存在、类型为视频且可读取；不能把“搜索结果有相关页面”当成视频已获取。若所有接口和网页路径都失败，应明确报告解析未完成，并请求用户提供已下载的视频文件，不得虚构字幕。
 
 ### 2. 下载和转音频
 
