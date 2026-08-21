@@ -1,0 +1,7 @@
+interface:
+  display_name: "实习项目面试题库生成"
+  short_description: "基于实习简历与项目代码生成业务化面试题库与标准口语回答"
+  default_prompt: "使用 $internship-project-interview-bank，根据我的实习简历、项目代码和个人职责生成业务化面试题库。"
+
+policy:
+  allow_implicit_invocation: true
